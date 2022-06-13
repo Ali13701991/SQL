@@ -1,0 +1,24 @@
+--Create a cloth store database
+CREATE TABLE store(id INTEGER PRIMARY KEY, item TEXT, quantity INTEGER, number_of_sold_items INTEGER, price REAL);
+INSERT INTO store VALUES(1, "T-Shirt", 9,8,17.5),(2,"trousers",15,8,15.25),(3,"sweat_pants",20,14,20.5),(4,"hoody",7,5,32),(5,"sweater",6,6,26),(6,"hat",11,8,13),(7,"glove",25,20,9.5),(8,"shirt",22,14,32.75),(9,"socks",20,10,8.5),(10,"bath_suit",18,14,33),(11,"skirt",16,11,29.4),(12,"blouse",20,10,25),(13,"scarf",19,9,12.3),(14,"jacket",21,17,40.1),(15,"pyjamas",15,8,15.5);
+--display the database ordered by price
+select * from store order by price desc;
+-- display the items order by number of sold itms which indicates most popular items
+select item, number_of_sold_items from store order by number_of_sold_items desc;
+--display the items ordered by number of sold items > 10
+select item, number_of_sold_items from store where number_of_sold_items>10 order by number_of_sold_items desc;
+--display the items ordered by quantity <10 
+select id,item,quantity from store where quantity<10;
+--display the total number of sold items
+select sum(number_of_sold_items) from store;
+--display the item which is sold the least in terms of number
+select item, min(number_of_sold_items) from store;
+--display the item which is sold the most in terms of number
+select item, max(number_of_sold_items) from store;
+--display the items ordered by the maximum amount of sale
+select item,(number_of_sold_items*price) from store group by item order by (number_of_sold_items*price) desc;
+--display the item which is sold the most financially
+select item, max((number_of_sold_items*price)) from store;
+--display the item which is sold the least financially
+select item, min((number_of_sold_items*price)) from store;
+
