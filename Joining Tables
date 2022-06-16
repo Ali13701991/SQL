@@ -1,0 +1,70 @@
+CREATE TABLE stars(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT,birthplace TEXT);
+INSERT INTO stars (name,birthplace) VALUES ("Brad Pitt","Oklahama_us");
+INSERT INTO stars (name,birthplace) VALUES ("Matt Damon","Massachussets_us");
+INSERT INTO stars (name,birthplace) VALUES ("Ryan Reynolds","Vancouver");
+INSERT INTO stars (name,birthplace) VALUES ("Angelina JOlie","Los Angeles_us");
+INSERT INTO stars (name,birthplace) VALUES ("Robert Downey Jr","New York_us");
+INSERT INTO stars (name,birthplace) VALUES ("Scarlett Johannson","New York_us");
+INSERT INTO stars (name,birthplace) VALUES ("Adam Brody","california_us");
+INSERT INTO stars (name,birthplace) VALUES ("Leighton Meester","texas_us");
+
+CREATE TABLE movies (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+star_id INTEGER,
+title TEXT,
+date TEXT);
+INSERT into movies (star_id, title, date)
+VALUES (1, "Mr and Mrs smith", "2005");
+INSERT into movies (star_id, title, date)
+VALUES (2, "Martian", "2015");
+INSERT into movies (star_id, title, date)
+VALUES (3, "Red Notice", "2021");
+INSERT into movies (star_id, title, date)
+VALUES (4, "Mr and Mrs smith", "2005");
+INSERT into movies (star_id, title, date)
+VALUES (5, "Iron Man", "2008");
+INSERT into movies (star_id, title, date)
+VALUES (6, "Black Widow", "2021");
+INSERT into movies (star_id, title, date)
+VALUES (4, "Original Sin", "2001");
+INSERT into movies (star_id, title, date)
+VALUES (7, "The Oranges", "2010");
+INSERT into movies (star_id, title, date)
+VALUES (8, "The Oranges", "2010");
+
+CREATE TABLE marriage(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+star1_id INTEGER,
+star2_id INTEGER);
+INSERT into marriage(star1_id, star2_id) VALUES(1,4);
+INSERT into marriage(star1_id, star2_id) VALUES(7,8);
+
+CREATE TABLE mutual_movies(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+star1_id INTEGER,
+star2_id INTEGER,
+movie_id INTEGER);
+INSERT into mutual_movies(star1_id, star2_id,movie_id) VALUES(1,4,1);
+INSERT into mutual_movies(star1_id, star2_id,movie_id) VALUES(7,8,9);
+
+--display what movies stars play in by joining tables
+SELECT stars.id,stars.name,stars.birthplace,movies.title,movies.date
+from stars 
+join movies 
+on stars.id=movies.star_id;
+--display stars who are couples by using multiple joining ( two joins)
+select a.name as husband,b.name as wife from marriage
+join stars a
+on marriage.star1_id=a.id
+join stars b
+on marriage.star2_id=b.id;
+--display stars who take part in mutual movies including movie's name bye using multiple joining ( three joins)
+select a.name as actor1,b.name as actor2 ,movies.title as movie_title from mutual_movies
+join stars a 
+on mutual_movies.star1_id=a.id 
+join stars b
+on mutual_movies.star2_id=b.id
+join movies
+on mutual_movies.movie_id=movies.id;
