@@ -1,0 +1,28 @@
+# first i created a table like an app which stores scores 
+create table App(
+id integer primary key autoincrement,
+name text,
+level integer,
+score integer,
+game_duration_hr real);
+#then i insert data into it
+insert into app(name,level,score,game_duration_hr) values('ali',49,24875,87.2);
+
+insert into app(name,level,score,game_duration_hr) values('alex',37,19525,65.1);
+
+insert into app(name,level,score,game_duration_hr) values('jack',24,13500,55.24);
+
+insert into app(name,level,score,game_duration_hr) values('bradd',58,35689,101.65);
+
+insert into app(name,level,score,game_duration_hr) values('james',15,5468,22.5);
+
+select * from app;
+#then i updated it
+update app set name='leonardo' where id=4;
+select * from app;
+#then i delete one row 
+delete from app where name='ali';
+select * from app;
+#then i inserted a new column
+ALTER TABLE APP ADD AGE integer default "unknown";
+select * from app;
