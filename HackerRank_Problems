@@ -459,3 +459,87 @@ Angela has been an employee for 1 month and earns $3443 per month. Michael has b
 Solution:
 
 SELECT NAME FROM EMPLOYEE WHERE SALARY > 2000  AND MONTHS < 10 ORDER BY EMPLOYEE_ID; 
+
+##The pads
+Generate the following two result sets:
+
+Query an alphabetically ordered list of all names in OCCUPATIONS, immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). For example: AnActorName(A), ADoctorName(D), AProfessorName(P), and ASingerName(S).
+Query the number of ocurrences of each occupation in OCCUPATIONS. Sort the occurrences in ascending order, and output them in the following format:
+There are a total of [occupation_count] [occupation]s.
+where [occupation_count] is the number of occurrences of an occupation in OCCUPATIONS and [occupation] is the lowercase occupation name. If more than one Occupation has the same [occupation_count], they should be ordered alphabetically.
+Note: There will be at least two entries in the table for each type of occupation.
+
+Input Format
+The OCCUPATIONS table is described as follows:
+
+column      type
+name        string
+occupation  string
+Occupation will only contain one of the following values: Doctor, Professor, Singer or Actor.
+
+solution :
+
+select concat(name, '(', substring(occupation, 1, 1), ')') as name
+from occupations
+order by name
+select concat('There are a total of', ' ', count(occupation), ' ', 
+lower(occupation), 's.') as profession
+from occupations
+group by occupation
+order by profession
+;
+
+## New Companies
+Given the table schemas below, write a query to print the company_code, founder name, total number of lead managers, total number of senior managers, total number of managers, and total number of employees. Order your output by ascending company_code
+Note:
+The tables may contain duplicate records.
+The company_code is string, so the sorting should not be numeric. For example, if the company_codes are C_1, C_2, and C_10, then the ascending company_codes will be C_1, C_10, and C_2.
+
+Input Format
+The following tables contain company data:
+Company: The company_code is the code of the company and founder is the founder of the company.
+
+column                type
+company_code  ----   string
+founder  -------     string
+
+Lead_Manager: The lead_manager_code is the code of the lead manager, and the company_code is the code of the working company.
+
+column                 type
+lead_manager_code ---- string
+company_code ----------string
+
+Senior_Manager: The senior_manager_code is the code of the senior manager, the lead_manager_code is the code of its lead manager, and the company_code is the code of the working company.
+
+column                   type
+senior_manager_code----- string
+lead_manager_code ------ string
+company_code ----------  string
+
+Manager: The manager_code is the code of the manager, the senior_manager_code is the code of its senior manager, the lead_manager_code is the code of its lead manager, and the company_code is the code of the working company
+
+column                   type
+manager_code ------------string
+senior_manager_code----- string
+lead_manager_code ------ string
+company_code ----------  string
+
+Employee: The employee_code is the code of the employee, the manager_code is the code of its manager, the senior_manager_code is the code of its senior manager, the lead_manager_code is the code of its lead manager, and the company_code is the code of the working company.
+
+column                   type
+employee_code -----------string
+manager_code ------------string
+senior_manager_code----- string
+lead_manager_code ------ string
+company_code ----------  string
+
+soloution :
+
+SELECT c.company_code, c.founder, COUNT(DISTINCT e.lead_manager_code), COUNT(DISTINCT e.senior_manager_code), COUNT(DISTINCT e.manager_code), COUNT(DISTINCT e.employee_code) FROM company c
+JOIN employee e ON c.company_code = e.company_code GROUP BY c.company_code, c.founder ORDER BY c.company_code
+
+##
+
+
+
+
