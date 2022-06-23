@@ -538,8 +538,73 @@ soloution :
 SELECT c.company_code, c.founder, COUNT(DISTINCT e.lead_manager_code), COUNT(DISTINCT e.senior_manager_code), COUNT(DISTINCT e.manager_code), COUNT(DISTINCT e.employee_code) FROM company c
 JOIN employee e ON c.company_code = e.company_code GROUP BY c.company_code, c.founder ORDER BY c.company_code
 
+
+##Interviews
+Samantha interviews many candidates from different colleges using coding challenges and contests. Write a query to print the contest_id, hacker_id, name, and the sums of total_submissions, total_accepted_submissions, total_views, and total_unique_views for each contest sorted by contest_id. Exclude the contest from the result if all four sums are 0.
+
+Note: A specific contest can be used to screen candidates at more than one college, but each college only holds 1 screening contest.
+
+Link to HackerRank problem.
+
+Input Format
+
+The following tables hold interview data:
+
+Contests: The contest_id is the id of the contest, hacker_id is the id of the hacker who created the contest, and name is the name of the hacker.
+
+column             type
+contest_id ------- integer
+hacker_id -------- integer
+name ------------- string
+Colleges: The college_id is the id of the college, and contest_id is the id of the contest that Samantha used to screen the candidates.
+
+column             type
+college_id ------- integer
+contest_id ------- integer
+Challenges: The challenge_id is the id of the challenge that belongs to one of the contests whose contest_id Samantha forgot, and college_id is the id of the college where the challenge was given to candidates.
+
+column             type
+college_id ------- integer
+challenge_id ----- integer
+View_Stats: The challenge_id is the id of the challenge, total_views is the number of times the challenge was viewed by candidates, and total_unique_views is the number of times the challenge was viewed by unique candidates.
+
+column                   type
+challenge_id ----------- integer
+total_views ------------ integer
+total_unique_views ----- integer
+Submission_Stats: The challenge_id is the id of the challenge, total_submissions is the number of submissions for the challenge, and total_accepted_submission is the number of submissions that achieved full scores.
+
+column                       type
+challenge_id --------------- integer
+total_submissions ---------- integer
+total_accepted_submissions-- integer
+
+solution :
+
+WITH Sub_stats_cte as
+(
+select challenge_id, SUM(total_Submissions) as total_submissions, SUM(total_accepted_Submissions) as total_accepted_submissions 
+from Submission_Stats group by challenge_id 
+), View_stats_cte as
+(
+select challenge_id, SUM(total_views) as total_views, SUM(total_unique_views) as total_unique_views 
+from View_Stats group by challenge_id 
+)
+SELECT con.contest_id, con.hacker_id, con.name, ISNULL(SUM(total_submissions),0) total_submissions, 
+ISNULL(SUM(total_accepted_submissions),0) total_accepted_submissions,
+ISNULL(SUM(total_views),0) total_views, ISNULL(SUM(total_unique_views),0) total_unique_views
+FROM Contests con
+inner join Colleges col on con.contest_id = col.contest_id
+inner join Challenges ch on col.college_id = ch.college_id
+LEFT JOIN Sub_stats_cte c1 ON ch.challenge_id = c1.challenge_id 
+LEFT JOIN View_stats_cte c2 ON ch.challenge_id = c2.challenge_id
+GROUP BY con.contest_id, con.hacker_id, con.name
+HAVING SUM(total_submissions)>0
+OR SUM(total_accepted_submissions)>0
+OR SUM(total_views)>0
+OR SUM(total_unique_views)>0
+ORDER BY contest_id;
+
 ##
-
-
 
 
